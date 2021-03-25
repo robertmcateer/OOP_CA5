@@ -17,13 +17,13 @@ public class CAOServer
         StudentDaoInterface IStudentDAO = new MySqlStudentDao();
         try{
             System.out.println("find all courses");
-
             List<Course> courses = ICourseDAO.findAllCourses();
 
             if(courses.isEmpty())
                 System.out.println("there is no courses");
             else
                 displayCourses(courses);
+
         }catch (DaoException e){
             e.printStackTrace();
         }
@@ -31,13 +31,13 @@ public class CAOServer
         System.out.println("**********");
         try{
             System.out.println("find course");
-
             Course c = ICourseDAO.findCourse("DK845");
 
             if(c == null)
                 System.out.println("there is no courses");
             else
-                System.out.println(c);;
+                System.out.println(c);
+
         }catch (DaoException e){
             e.printStackTrace();
         }
@@ -45,46 +45,55 @@ public class CAOServer
         System.out.println("**********");
         try{
             System.out.println("login");
-
             Student s = new Student(80910958,"2001-03-2","Password123");
             boolean c = IStudentDAO.login(s);
 
             if(c == false)
                 System.out.println("login failed");
             else
-                System.out.println("login successful");;
+                System.out.println("login successful");
+
         }catch (DaoException e){
             e.printStackTrace();
         }
+
         System.out.println("**********");
         try{
             System.out.println("register");
-
             Student s = new Student(66666666,"2000-06-111","robert");
             boolean c = IStudentDAO.login(s);
 
             if(c == false)
                 System.out.println("Student added");
             else
-                System.out.println("student not added");;
+                System.out.println("student not added");
+
         }catch (DaoException e){
             e.printStackTrace();
         }
+
         System.out.println("**********");
         try{
-            System.out.println("is register");
-
+            System.out.println("loggin");
             Student s = new Student(80910958,"2001-03-2","Password123");
             boolean c = IStudentDAO.login(s);
 
-
             if(c == false)
-                System.out.println("Student not registered");
+                System.out.println("Student logged in");
             else
-                System.out.println("student registered");;
+                System.out.println("Student loggin failed");;
         }catch (DaoException e){
             e.printStackTrace();
         }
+
+
+
+
+
+
+
+
+
 
 
 
