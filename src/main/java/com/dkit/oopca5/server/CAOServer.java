@@ -8,6 +8,7 @@ package com.dkit.oopca5.server;
 import com.dkit.oopca5.core.Course;
 import com.dkit.oopca5.core.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CAOServer
@@ -15,6 +16,7 @@ public class CAOServer
     public static void main(String[] args) {
         CourseDaoInterface ICourseDAO = new MySqlCourseDao();
         StudentDaoInterface IStudentDAO = new MySqlStudentDao();
+        StudentCoursesDaoInterface IStudentCoursesDAO = new MySqlStudentCoursesDao();
         try{
             System.out.println("find all courses");
             List<Course> courses = ICourseDAO.findAllCourses();
@@ -82,6 +84,54 @@ public class CAOServer
                 System.out.println("Student logged in");
             else
                 System.out.println("Student loggin failed");;
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+        System.out.println("**********");
+        try{
+            System.out.println("FindChoices");
+            List<String> courses;
+            courses = IStudentCoursesDAO.findCoursesForUser(1234967);
+
+
+
+            if(courses.size() ==0)
+                System.out.println("No Choices Found");
+            else
+                for(String s : courses){
+                    System.out.println(s);
+                }
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+        System.out.println("**********");
+        try{
+            System.out.println("UpdateChoices");
+            List<String> courses = new ArrayList<>();
+
+            courses.add("DK845");
+            courses.add("DN150");
+            courses.add("DN100");
+
+            IStudentCoursesDAO.updateCoursesForUser(1234967,courses);
+
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+        System.out.println("**********");
+        try{
+            System.out.println("FindChoices");
+            List<String> courses;
+            courses = IStudentCoursesDAO.findCoursesForUser(1234967);
+
+
+
+            if(courses.size()==0)
+                System.out.println("No Choices Found");
+            else
+                for(String s : courses){
+                    System.out.println(s);
+                }
         }catch (DaoException e){
             e.printStackTrace();
         }

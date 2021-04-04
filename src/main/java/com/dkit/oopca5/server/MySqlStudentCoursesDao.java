@@ -26,7 +26,7 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
             //Get connection object using the methods in the super class (MySqlDao.java)...
             con = this.getConnection();
 
-            String query = "SELECT COURSEID FROM STUDENT_COURSES WHERE CAONUMBER = ?";
+            String query = "SELECT * FROM STUDENT_COURSES WHERE CAONUMBER = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, caoNumber);
 
@@ -77,31 +77,22 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
         {
             //Get connection object using the methods in the super class (MySqlDao.java)...
             con = this.getConnection();
-            String query = "DELETE * FROM STUDENT_COURSES WHERE CAONUMBER = ?  ;";
+            String query = "DELETE FROM STUDENT_COURSES WHERE CAONUMBER = ?;";
             ps = con.prepareStatement(query);
             ps.setInt(1, caoNumber);
 
+            ps.executeUpdate();
             for(int i = 0; i < courses.size(); i ++)
             {
-                String query1 = "INSERT INTO STUDENT_COURSES VALUES (?, ?,);";
+                String query1 = "INSERT INTO STUDENT_COURSES VALUES (?,?);";
                 ps = con.prepareStatement(query1);
                 ps.setInt(1, caoNumber);
                 ps.setString(2, courses.get(i));
-
-
+                ps.executeUpdate();
             }
 
 
 
-            //Using a PreparedStatement to execute SQL...
-            rs = ps.executeQuery();
-            while (rs.next())
-            {
-
-                String courseid = rs.getString("COURSEID");
-                courses.add(courseid);
-
-            }
         } catch (SQLException e)
         {
             throw new DaoException("UpdateChoices() " + e.getMessage());
