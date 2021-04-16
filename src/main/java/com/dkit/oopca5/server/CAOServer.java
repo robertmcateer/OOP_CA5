@@ -62,7 +62,7 @@ public class CAOServer
         System.out.println("**********");
         try{
             System.out.println("register");
-            Student s = new Student(66666666,"2000-06-111","robert");
+            Student s = new Student(66666,"2000-06-111","robert");
             boolean c = IStudentDAO.login(s);
 
             if(c == false)
@@ -91,9 +91,7 @@ public class CAOServer
         try{
             System.out.println("FindChoices");
             List<String> courses;
-            courses = IStudentCoursesDAO.findCoursesForUser(1234967);
-
-
+            courses = IStudentCoursesDAO.findCoursesForUser(12345);
 
             if(courses.size() ==0)
                 System.out.println("No Choices Found");
@@ -109,11 +107,11 @@ public class CAOServer
             System.out.println("UpdateChoices");
             List<String> courses = new ArrayList<>();
 
-            courses.add("DK845");
+            courses.add("DN400");
             courses.add("DN150");
-            courses.add("DN100");
+            courses.add("DK845");
 
-            IStudentCoursesDAO.updateCoursesForUser(1234967,courses);
+            IStudentCoursesDAO.updateCoursesForUser(12345,courses);
 
         }catch (DaoException e){
             e.printStackTrace();
@@ -122,7 +120,7 @@ public class CAOServer
         try{
             System.out.println("FindChoices");
             List<String> courses;
-            courses = IStudentCoursesDAO.findCoursesForUser(1234967);
+            courses = IStudentCoursesDAO.findCoursesForUser(12345);
 
 
 
@@ -135,18 +133,6 @@ public class CAOServer
         }catch (DaoException e){
             e.printStackTrace();
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     static void displayCourses(List<Course> courses){

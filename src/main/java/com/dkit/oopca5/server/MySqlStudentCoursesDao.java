@@ -37,6 +37,7 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
 
                 String courseid = rs.getString("COURSEID");
                 courses.add(courseid);
+//                int order = rs.getInt("ORDER");
 
             }
         } catch (SQLException e)
@@ -84,14 +85,17 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
             ps.executeUpdate();
             for(int i = 0; i < courses.size(); i ++)
             {
-                String query1 = "INSERT INTO STUDENT_COURSES VALUES (?,?);";
+                String query1 = "INSERT INTO STUDENT_COURSES VALUES (?,?,?);";
                 ps = con.prepareStatement(query1);
                 ps.setInt(1, caoNumber);
                 ps.setString(2, courses.get(i));
+                System.out.println(i);
+                ps.setInt(3, courses.indexOf(courses.get(i)));
+
+
+
                 ps.executeUpdate();
             }
-
-
 
         } catch (SQLException e)
         {

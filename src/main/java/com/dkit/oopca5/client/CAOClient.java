@@ -44,9 +44,8 @@ public class CAOClient
 
                 case LOGIN:
                     System.out.println("LOGIN");
-                    login();
-                    // if login is successful run doLoginMenuLoop
-//                    doLoginMenuLoop(caonumber);
+                    int caonumber=login();
+                    doLoginMenuLoop(caonumber);
                     break;
             }
             printMainMenu();
@@ -59,31 +58,102 @@ public class CAOClient
 
     private void register()
     {
-        System.out.println("Please Enter details: ");
-        System.out.println("CAO NUmber: ");
-        int caoNumber = sc.nextInt();
-        System.out.println("DOB: ");
-        String dob = sc.next();
-        System.out.print("Password: ");
-        String password = sc.next();
+        int caoNumber=0;
+        String dob = "";
+        String password = "";
+
+        boolean input = false;
+        while(!input)
+        {
+            System.out.println("Enter in Your 5 Digit CaoNumber");
+            caoNumber = sc.nextInt();
+            if (RegexChecker.isValidCao(caoNumber)) {
+
+                input = true;
+            }
+        }
+        input = false;
+        while(!input){
+            System.out.println("Enter in your DOB (YYYY-MM-DD)");
+            dob = sc.next();
+            if (RegexChecker.isValidDOB(dob)) {
+
+                input = true;
+            }
+        }
+
+        input = false;
+        while(!input){
+            System.out.println("Enter in a Strong password");
+            System.out.println();
+            System.out.println(Colours.GREEN+"- At least 8 charataers containing at least one digit," + Colours.RESET);
+            System.out.println(Colours.GREEN+"- One lowercase and one uppercase letter,"+ Colours.RESET);
+            System.out.println(Colours.GREEN+"- One special character"+ Colours.RESET);
+
+
+            password = sc.next();
+            if (RegexChecker.isValidPass(password)) {
+
+                input = true;
+            }
+        }
+
+
         String message = "REGISTER" + CAOService.BREAKING_CHARACTER + caoNumber + CAOService.BREAKING_CHARACTER +
                 dob + CAOService.BREAKING_CHARACTER + password;
         System.out.println("Message ready for server: "+ message);
 
 
     }
-    private void login()
+    private int login()
     {
-        System.out.println("CAO NUmber");
-        int caoNumber = sc.nextInt();
-        System.out.println("DOB");
-        String dob = sc.next();
-        System.out.print("Password: ");
-        String password = sc.next();
+        int caoNumber=0;
+        String dob = "";
+        String password = "";
+
+        boolean input = false;
+        while(!input)
+        {
+            System.out.println("Enter in Your 5 Digit CaoNumber");
+             caoNumber = sc.nextInt();
+            if (RegexChecker.isValidCao(caoNumber)) {
+
+                input = true;
+            }
+        }
+        input = false;
+        while(!input){
+            System.out.println("Enter in valid DOB (YYYY-MM-DD)");
+            dob = sc.next();
+            if (RegexChecker.isValidDOB(dob)) {
+
+                input = true;
+            }
+        }
+
+        input = false;
+        while(!input){
+            System.out.println("Enter in a Strong password");
+            System.out.println();
+            System.out.println(Colours.GREEN+"- At least 8 charataers containing at least one digit," + Colours.RESET);
+            System.out.println(Colours.GREEN+"- One lowercase and one uppercase letter,"+ Colours.RESET);
+            System.out.println(Colours.GREEN+"- One special character"+ Colours.RESET);
+
+
+            password = sc.next();
+            if (RegexChecker.isValidPass(password)) {
+
+                input = true;
+            }
+        }
+
 
         Student s = new Student(caoNumber,dob,password);
-        String message = "LOGIN" + CAOService.BREAKING_CHARACTER + s + CAOService.BREAKING_CHARACTER;
+        String message = "LOGIN" + CAOService.BREAKING_CHARACTER + s.getCaoNumber() + CAOService.BREAKING_CHARACTER
+                + s.getDayOfBirth() + CAOService.BREAKING_CHARACTER
+                + s.getPassword();
         System.out.println("Message ready for server: "+ message);
+        return caoNumber;
     }
 
     private void printMainMenu()
@@ -104,10 +174,7 @@ public class CAOClient
         MainMenu menuOption = null;
         if (option < 0 || option > 2)
         {
-            System.out.println("Please select valid menu option ");
-            System.out.println(Colours.RED+"Enter 0 to Quit");
-            System.out.println(Colours.RED+"Enter 1 to Register");
-            System.out.println(Colours.RED+"Enter 2 to Login");
+            printMainMenu();
         }
         else
             { menuOption = MainMenu.values()[option];}
@@ -119,15 +186,16 @@ public class CAOClient
 
     private void doLoginMenuLoop(int caoNum)
     {
-
         printLoginMenu();
         LoginMenu loginOption = getLoginMenuOption();
 
-        while(loginOption != LoginMenu.QUIT)
+
+        while(loginOption != LoginMenu.LOGOUT)
         {
             switch (loginOption){
-                case LOGOUT:
-                    System.out.println("Logged Out");
+                case QUIT:
+                    System.out.println("goodbye");
+                    System.exit(0);
                     break;
                 case DISPLAY_COURSE:
                     displayCourse();
@@ -141,7 +209,6 @@ public class CAOClient
                 case UPDATE_CURRENT_CHOICES:
                     updateCurrentChoices(caoNum);
                     break;
-                
             }
             printLoginMenu();
             loginOption = getLoginMenuOption();
@@ -156,13 +223,8 @@ public class CAOClient
         LoginMenu menuOption = null;
         if (option < 0 || option > 5)
         {
-            System.out.println("Please select valid menu option ");
-            System.out.println(Colours.RED+"Enter 0 to Quit");
-            System.out.println(Colours.RED+"Enter 1 to Register");
-            System.out.println(Colours.RED+"Enter 2 to Login");
-            System.out.println(Colours.RED+"Enter 3 to Login");
-            System.out.println(Colours.RED+"Enter 4 to Login");
-            System.out.println(Colours.RED+"Enter 5 to Login");
+            printLoginMenu();
+
         }
         else
         { menuOption = LoginMenu.values()[option];}
@@ -171,6 +233,7 @@ public class CAOClient
         return menuOption;
 
     }
+
 
     private void printLoginMenu() {
         for (int i =0; i < LoginMenu.values().length;i++)
@@ -183,16 +246,20 @@ public class CAOClient
     }
     private void displayCourse()
     {
-        System.out.println("Course ID :");
-        String courseID = sc.next();
 
-        if(RegexChecker.isValidCourse(courseID)){
-            String message = "findCourse" + CAOService.BREAKING_CHARACTER + courseID;
-            System.out.println("Message ready for server: "+ message);
+        String courseID = "";
+
+        boolean input = false;
+        while(!input)
+        {
+            System.out.println("Enter Course ID (eg DK999)");
+            courseID = sc.next();
+            if (RegexChecker.isValidCourse(courseID)) {
+
+                input = true;
+            }
         }
-        else{
-            System.out.println("Invalid Course Entered");
-        }
+
     }
 
     private void displayAllCourses()
@@ -223,15 +290,11 @@ public class CAOClient
             {
                 choices.add(id);
             }
-            else if (i == 0)
-            {
-                i = 0;
-            }
-            else
-            {
+            else{
+                System.out.println("Enter Valid Course (e.g DK999)");
                 i--;
-            }
 
+            }
 
         }
         String message = "updateCoursesForUse"+ CAOService.BREAKING_CHARACTER + caoNum + CAOService.BREAKING_CHARACTER + choices;
