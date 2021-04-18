@@ -96,7 +96,7 @@ public class MySqlStudentDao extends MySqlDAO implements StudentDaoInterface {
             ps.setInt(1, s.getCaoNumber());
             ps.setString(2, s.getDayOfBirth());
             ps.setString(3, s.getPassword());
-            rs = ps.executeQuery();
+            ps.executeUpdate();
 
             String query1 = "SELECT * FROM STUDENT WHERE CAONUMBER = ?";
             ps = con.prepareStatement(query1);
@@ -157,36 +157,25 @@ public class MySqlStudentDao extends MySqlDAO implements StudentDaoInterface {
         Student g = null;
         boolean reg = false;
 
-
         try
         {
-            //Get connection object using the methods in the super class (MySqlDao.java)...
             con = this.getConnection();
-
             String query = "SELECT * FROM STUDENT WHERE CAONUMBER = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, s.getCaoNumber());
-
-            //Using a PreparedStatement to execute SQL...
             rs = ps.executeQuery();
 
             while (rs.next())
             {
-
                 int cao = rs.getInt("CAONUMBER");
                 String DOB = rs.getString("DOB");
                 String password = rs.getString("PASSWORD");
-
-                g = new Student(cao, DOB, password);
-
+                g = new Student(cao,DOB,password);
             }
 
-            if(g.equals(s)){
+            if(s.equals(g)){
                 reg = true;
             }
-
-
-
         } catch (SQLException e)
         {
             throw new DaoException("Register() " + e.getMessage());

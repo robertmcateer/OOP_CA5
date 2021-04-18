@@ -61,14 +61,14 @@ public class CAOServer
 
         System.out.println("**********");
         try{
-            System.out.println("register");
-            Student s = new Student(66666,"2000-06-111","robert");
-            boolean c = IStudentDAO.login(s);
+            System.out.println("registed");
+            Student s = new Student(12345,"1998-11-29","Password1");
+            boolean c = IStudentDAO.isregistered(s);
 
             if(c == false)
-                System.out.println("Student added");
+                System.out.println("not registered");
             else
-                System.out.println("student not added");
+                System.out.println("registered");
 
         }catch (DaoException e){
             e.printStackTrace();

@@ -23,7 +23,6 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
 
         try
         {
-            //Get connection object using the methods in the super class (MySqlDao.java)...
             con = this.getConnection();
 
             String query = "SELECT * FROM STUDENT_COURSES WHERE CAONUMBER = ?";
@@ -37,7 +36,7 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
 
                 String courseid = rs.getString("COURSEID");
                 courses.add(courseid);
-//                int order = rs.getInt("ORDER");
+
 
             }
         } catch (SQLException e)
@@ -89,10 +88,7 @@ public class MySqlStudentCoursesDao extends MySqlDAO implements StudentCoursesDa
                 ps = con.prepareStatement(query1);
                 ps.setInt(1, caoNumber);
                 ps.setString(2, courses.get(i));
-                System.out.println(i);
-                ps.setInt(3, courses.indexOf(courses.get(i)));
-
-
+                ps.setInt(3,i+1);
 
                 ps.executeUpdate();
             }
